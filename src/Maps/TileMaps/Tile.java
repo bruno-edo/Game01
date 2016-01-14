@@ -8,6 +8,7 @@ public class Tile
 {
     private BufferedImage image;
     private int type;
+    private int gid;
     
     // tile types
     
@@ -18,6 +19,13 @@ public class Tile
     {
         this.image = image;
         this.type = type;
+    }
+    
+    public Tile(BufferedImage image, int type, int gid)
+    {
+        this.image = image;
+        this.type = type;
+        this.gid = gid;
     }
 
     public BufferedImage getImage() {
@@ -34,6 +42,14 @@ public class Tile
 
     public void setType(int type) {
         this.type = type;
+    }
+
+    public int getGid() {
+        return gid;
+    }
+
+    public void setGid(int gid) {
+        this.gid = gid;
     }
     
     

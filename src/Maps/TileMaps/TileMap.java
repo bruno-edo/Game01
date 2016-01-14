@@ -1,10 +1,10 @@
 package Maps.TileMaps;
 
 
+import Parser.TiledMapParser;
 import java.awt.*;
 import java.awt.image.*;
-import java.io.*;
-import javax.imageio.ImageIO;
+import java.util.ArrayList;
 import jogoexemplo.GUI.GamePanel;
 
 public class TileMap 
@@ -22,7 +22,7 @@ public class TileMap
     private double tween;
     
     //map
-    private int[][] map;
+    private TileMapLayer[] layerMap;
     private int tileSize;
     private int numRows;
     private int numCols;
@@ -30,6 +30,7 @@ public class TileMap
     private int height;
     
     // tileset
+    ArrayList<Tileset> tileSetsCollection =  new ArrayList<Tileset>();
     private BufferedImage tileset;
     private int numTilesAcross;
     private Tile[][] tiles;
@@ -40,18 +41,30 @@ public class TileMap
     private int numRowsToDraw;
     private int numColsToDraw;
     
+    TiledMapParser xmlParser;
+    
+    private final int maxTileSize = 64;
+    
     public TileMap(int tileSize)
     {
-        this.tileSize = tileSize;
-        numRowsToDraw = GamePanel.HEIGHT / tileSize + 2;
-        numColsToDraw = GamePanel.WIDTH / tileSize + 2;
+        this.tileSize = 16;
+        numRowsToDraw = GamePanel.HEIGHT / this.tileSize + 4;
+        numColsToDraw = GamePanel.WIDTH / this.tileSize + 4;
         
         tween = 1;
+        
+        xmlParser = new TiledMapParser(this);
+        xmlParser.parseNewMapFile("/TileMaps/test.tmx");
+    }
+    
+    public void loadFile(String path)
+    {
+        boolean response = xmlParser.parseNewMapFile(path);
     }
     
     //loads tileset images from the tileset sheet
-    public void loadTiles(String s)
-    {
+    public void loadTileset()
+    {/*
         try
         {
             tileset = ImageIO.read(getClass().getResourceAsStream(s));
@@ -59,7 +72,7 @@ public class TileMap
             
             tiles =  new Tile[2][numTilesAcross];
             
-            BufferedImage subimage;
+            BufferedImage subimage;*/
             
             
             /*
@@ -72,7 +85,7 @@ public class TileMap
             genérico o possível.
             
             */
-            for(int col = 0; col < numTilesAcross; col++)
+           /* for(int col = 0; col < numTilesAcross; col++)
             {
                 subimage = tileset.getSubimage(col * tileSize,
                         0, tileSize, tileSize);
@@ -89,12 +102,15 @@ public class TileMap
         catch(Exception e)
         {
             e.printStackTrace();
-        }
+        }*/
+        
+        tileSetsCollection =  xmlParser.getTilesets();
+        
     }
     
-    public void loadMap(String s)
+    public void loadMap()
     {
-        try
+        /*try
         {
             InputStream in = getClass().getResourceAsStream(s);
             BufferedReader br = new BufferedReader(
@@ -123,7 +139,16 @@ public class TileMap
         catch(Exception e)
         {
             e.printStackTrace();
-        }
+        }*/
+        
+                    
+        //grabs the map layers, so the tile matrix can be generated 
+        layerMap = xmlParser.getMapLayers(xmlParser.getMapHeight(), xmlParser.getMapWidth());
+        
+        numCols = layerMap[0].getColumns();
+        numRows = layerMap[0].getRows();
+        
+        
     }
 
     public int getX() {
@@ -148,11 +173,8 @@ public class TileMap
     
     public int getType(int row, int col)
     {
-        int rc = map[row][col];
-        int r = rc / numTilesAcross;
-        int c = rc % numTilesAcross;
         
-        return tiles[r][c].getType();
+        return -1;
     }
     
     public void setPosition(double x, double y)
@@ -163,8 +185,11 @@ public class TileMap
         
         fixBounds();
         
-        colOffset = (int)-this.x / tileSize;
-        rowOffset = (int)-this.y / tileSize;
+        width = numCols * tileSetsCollection.get(0).getTileWidth();
+        height = numRows * tileSetsCollection.get(0).getTileHeight();
+        
+        colOffset = (int)-this.x / tileSetsCollection.get(0).getTileWidth();
+        rowOffset = (int)-this.y / tileSetsCollection.get(0).getTileHeight();
         
         
     }
@@ -180,41 +205,49 @@ public class TileMap
     
     public void draw(Graphics2D g)
     {
-        for(int row = rowOffset; row < rowOffset + numRowsToDraw; row++)
+       /* g.drawImage(tileSetsCollection.get(0).getTiles().get(10).getImage(), 
+                        (int) x + 0 * tileSetsCollection.get(0).getTileWidth(),
+                        (int) y + 0 * tileSetsCollection.get(0).getTileHeight(),
+                        null);*/
+        for(int layer = 0; layer < layerMap.length; layer++)
         {
-            
-            if(row >= numRows)
+            int[][] map = layerMap[layer].getTilematrix();
+            for(int row = rowOffset; row < rowOffset + numRowsToDraw; row++)
             {
-                break;
-            }
             
-            for(int col = colOffset; col < colOffset + numColsToDraw; col++)
-            {
-                if(col >= numCols)
+                if(row >= numRows)
                 {
                     break;
                 }
-                
-                /*
-                        In his tutorial 0 (first tile in the tile set) was
-                        had no image, so no reason to try to draw it.
-                        Hence this line of code below.
-                */
-                
-                if(map[row][col] == 0)
+
+                for(int col = colOffset; col < colOffset + numColsToDraw; col++)
                 {
-                    continue;
+                    if(col >= numCols)
+                    {
+                        break;
+                    }
+
+                    /*
+                            In his tutorial 0 (first tile in the tile set) was
+                            had no image, so no reason to try to draw it.
+                            Hence this line of code below.
+                    */
+
+                    if(map[row][col] == 0)
+                    {
+                        continue;
+                    }
+
+                    int rc = map[row][col];
+                    //System.out.println("rc: "+rc);
+                    
+                    //Adequar pra trabalhar com mais de uma coleção de tiles e pegar o tile usando o gid
+                    g.drawImage(tileSetsCollection.get(0).getTiles().get(rc-1).getImage(), 
+                            (int) x + col * tileSize,
+                            (int) y + row * tileSize,
+                            null);
                 }
-                
-                int rc = map[row][col];
-                int r = rc / numTilesAcross;
-                int c = rc % numTilesAcross;
-                
-                g.drawImage(tiles[r][c].getImage(), 
-                        (int) x + col * tileSize,
-                        (int) y + row * tileSize,
-                        null);
             }
-        }
+        }   
     }
 }

@@ -1,6 +1,6 @@
 package Parser;
 
-import GameState.GameStateManager;
+import Maps.TileMaps.TileMap;
 import Maps.TileMaps.TileMapLayer;
 import Maps.TileMaps.Tileset;
 import org.w3c.dom.*;
@@ -14,15 +14,15 @@ import org.xml.sax.SAXException;
 
 public class TiledMapParser 
 {
-    private GameStateManager gsm;
     private DocumentBuilderFactory factory;
     private DocumentBuilder builder;
     private Document doc;
     private File inputFile;
+    private TileMap tileMap;
     
-    public TiledMapParser(GameStateManager gsm)
+    public TiledMapParser(TileMap tileMap)
     {
-        this.gsm = gsm;
+        this.tileMap = tileMap;
         
         factory = DocumentBuilderFactory.newInstance();
         
@@ -42,11 +42,11 @@ public class TiledMapParser
         First it separates the tile layers, after that it grabs the object layers and then
     proceeds to generate the TileMap object, so it can be returned to the controller for use.
     */
-    
-    
-    //TODO: change this to return a tileMap object (gotta change most of the tileMap class)
-    public void parseNewMapFile(String address)
+      
+    //Loads the specified xml file to memory.
+    public boolean parseNewMapFile(String address)
     {
+        boolean r =false;
         URL u = getClass().getResource(address);
         inputFile = new File(u.getPath());
         
@@ -55,20 +55,31 @@ public class TiledMapParser
             doc = builder.parse(inputFile);
             doc.getDocumentElement().normalize();
             
-            //Examine the attributes from the root element to know the tileMap dimensions
-            int height = Integer.parseInt(doc.getDocumentElement().getAttribute("height"));
-            int width = Integer.parseInt(doc.getDocumentElement().getAttribute("width"));
-            
-            ArrayList<Tileset> tilesets = getTilesetsTileDimensions(doc);
-            
-            //grabs the map layers, so the tile matrix can be generated
-            NodeList nList = doc.getElementsByTagName("layer");
-            int numLayers = nList.getLength(); //number of layers
-            TileMapLayer[] mapLayers = new TileMapLayer[numLayers];
-            
-           
-            for (int layer = 0; layer < numLayers; layer++) 
-            {                
+            r = true;
+            //TODO: grab the object layers
+        }
+        
+        
+        catch (SAXException ex) 
+        {
+            Logger.getLogger(TiledMapParser.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+        catch (IOException ex) 
+        {
+            Logger.getLogger(TiledMapParser.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return r;
+    }
+    
+    public TileMapLayer[] getMapLayers(int height, int width)
+    {
+         NodeList nList = doc.getElementsByTagName("layer");
+         int numLayers = nList.getLength(); //number of layers
+         TileMapLayer[] mapLayers =  new TileMapLayer[numLayers];
+         
+         for (int layer = 0; layer < numLayers; layer++) 
+         {                
                 int[][] tileMatrix = new int[height][width];
                 Node nNode = nList.item(layer);
                 
@@ -110,43 +121,34 @@ public class TiledMapParser
                     String temp = "";
                     
                     temp = element.getAttribute("opacity");
-                    if(temp != "")
+                    if(!temp.equals(""))
                     {
                         double opacity = Double.parseDouble(temp);
                         mapLayers[layer].setOpacity(opacity);
                     }
                     
                     temp = element.getAttribute("offsety");
-                    if(temp != "")
+                    if(!temp.equals(""))
                     {
                         double yOffset = Double.parseDouble(temp);
                         mapLayers[layer].setyOffset(yOffset);
                     }
                     
                     temp = element.getAttribute("offsetx");
-                    if(temp != "")
+                    if(!temp.equals(""))
                     {
                         double xOffset = Double.parseDouble(temp);
                         mapLayers[layer].setxOffset(xOffset);
                     }
                 }
             }
-        }
-        
-        
-        catch (SAXException ex) 
-        {
-            Logger.getLogger(TiledMapParser.class.getName()).log(Level.SEVERE, null, ex);
-        } 
-        catch (IOException ex) 
-        {
-            Logger.getLogger(TiledMapParser.class.getName()).log(Level.SEVERE, null, ex);
-        }
+         
+         return mapLayers;
     }
 
     
     //Grabs the tileset relevant information and orders it by name.
-    private ArrayList<Tileset> getTilesetsTileDimensions(Document doc) 
+    public ArrayList<Tileset> getTilesets() 
     {
         String tilesetName = "";
         ArrayList tilesetsList = new ArrayList<Tileset>();
@@ -157,15 +159,77 @@ public class TiledMapParser
         for(int i = 0; i < nodeList.getLength(); i++)
         {
             Node n = nodeList.item(i);
+            Node imageN = imageList.item(i);
             
-            //TODO: change name to filename
-            int height = Integer.parseInt(n.getAttributes().getNamedItem("tileheight").getTextContent());
-            int width = Integer.parseInt(n.getAttributes().getNamedItem("tilewidth").getTextContent());
-            int gid = Integer.parseInt(n.getAttributes().getNamedItem("tilewidth").getTextContent());
-           // System.out.println("tilesetName: "+tilesetName+"    h: "+dimensions[0]+"    w: "+dimensions[1]);
+            //Grabs the name of the image to serve as tileset name.
+            tilesetName = imageN.getAttributes().getNamedItem("source").getTextContent();
             
+            System.out.println("tileset name: "+tilesetName);
+            
+            int tileHeight = Integer.parseInt(n.getAttributes().getNamedItem("tileheight").getTextContent());
+            int tileWidth = Integer.parseInt(n.getAttributes().getNamedItem("tilewidth").getTextContent());
+            int gid = Integer.parseInt(n.getAttributes().getNamedItem("firstgid").getTextContent());
+            int tileCount = Integer.parseInt(n.getAttributes().getNamedItem("tilecount").getTextContent());
+            int sheetColumns = Integer.parseInt(n.getAttributes().getNamedItem("columns").getTextContent());
+            
+            Tileset tilesetTemp = new Tileset(tilesetName, tileHeight, tileWidth, gid, tileCount, sheetColumns);
+            tilesetsList.add(tilesetTemp);
         }
                 
         return tilesetsList;
     }
+    
+    //Examine the attributes from the root element to know the tileMap dimensions
+    public int getMapHeight()
+    {
+        return Integer.parseInt(doc.getDocumentElement().getAttribute("height"));
+    }
+    
+    //Examine the attributes from the root element to know the tileMap dimensions
+    public int getMapWidth()
+    {
+        return Integer.parseInt(doc.getDocumentElement().getAttribute("width"));
+    }
+
+    public DocumentBuilderFactory getFactory() {
+        return factory;
+    }
+
+    public void setFactory(DocumentBuilderFactory factory) {
+        this.factory = factory;
+    }
+
+    public DocumentBuilder getBuilder() {
+        return builder;
+    }
+
+    public void setBuilder(DocumentBuilder builder) {
+        this.builder = builder;
+    }
+
+    public Document getDoc() {
+        return doc;
+    }
+
+    public void setDoc(Document doc) {
+        this.doc = doc;
+    }
+
+    public File getInputFile() {
+        return inputFile;
+    }
+
+    public void setInputFile(File inputFile) {
+        this.inputFile = inputFile;
+    }
+
+    public TileMap getTileMap() {
+        return tileMap;
+    }
+
+    public void setTileMap(TileMap tileMap) {
+        this.tileMap = tileMap;
+    }
+    
+    
 }

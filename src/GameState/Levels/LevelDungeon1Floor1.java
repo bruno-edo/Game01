@@ -25,8 +25,9 @@ public class LevelDungeon1Floor1 extends GameState
     public void init() 
     {
         tileMap = new TileMap(30);
-        tileMap.loadTiles("/Tilesets/grasstileset.gif");
-        tileMap.loadMap("/TileMaps/level1-1.map");
+        tileMap.loadFile("/TileMaps/test.tmx");
+        tileMap.loadTileset();
+        tileMap.loadMap();
         tileMap.setPosition(0, 0);
     }
 

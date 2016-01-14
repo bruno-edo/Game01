@@ -3,7 +3,6 @@
 package GameState;
 
 import GameState.Levels.LevelDungeon1Floor1;
-import Parser.TiledMapParser;
 import java.util.ArrayList;
 
 public class GameStateManager 
@@ -21,9 +20,6 @@ public class GameStateManager
         currentState = 0;
         gameStates.add(new MenuState(this));
         gameStates.add(new LevelDungeon1Floor1(this));
-        
-        TiledMapParser xmlParser = new TiledMapParser(this);
-        xmlParser.parseNewMapFile("/TileMaps/test.tmx");
     }
     
     public void setState(int state)
