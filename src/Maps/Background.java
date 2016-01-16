@@ -5,7 +5,7 @@ package Maps;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
-import jogoexemplo.GUI.GamePanel;
+import Main.GUI.GamePanel;
 
 public class Background 
 {
@@ -20,6 +20,7 @@ public class Background
     
     public Background(String s, double ms)
     {
+        moveScale = ms;
         try
         {
             image =  ImageIO.read(getClass().getResourceAsStream(s));

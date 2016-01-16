@@ -1,7 +1,179 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="16" tileheight="16" nextobjectid="13">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="16" tileheight="16" nextobjectid="40">
  <tileset firstgid="1" name="dungeon_sheet" tilewidth="16" tileheight="16" tilecount="240" columns="24">
   <image source="dungeon_sheet.png" width="384" height="160"/>
+  <tile id="34">
+   <animation>
+    <frame tileid="34" duration="350"/>
+    <frame tileid="36" duration="350"/>
+    <frame tileid="38" duration="350"/>
+    <frame tileid="40" duration="350"/>
+    <frame tileid="42" duration="350"/>
+    <frame tileid="44" duration="350"/>
+    <frame tileid="46" duration="350"/>
+   </animation>
+  </tile>
+  <tile id="35">
+   <animation>
+    <frame tileid="35" duration="350"/>
+    <frame tileid="37" duration="350"/>
+    <frame tileid="39" duration="350"/>
+    <frame tileid="41" duration="350"/>
+    <frame tileid="43" duration="350"/>
+    <frame tileid="45" duration="350"/>
+    <frame tileid="47" duration="350"/>
+   </animation>
+  </tile>
+  <tile id="106">
+   <animation>
+    <frame tileid="106" duration="350"/>
+    <frame tileid="108" duration="350"/>
+    <frame tileid="110" duration="350"/>
+    <frame tileid="112" duration="350"/>
+    <frame tileid="114" duration="350"/>
+    <frame tileid="116" duration="350"/>
+    <frame tileid="118" duration="350"/>
+   </animation>
+  </tile>
+  <tile id="107">
+   <animation>
+    <frame tileid="107" duration="350"/>
+    <frame tileid="109" duration="350"/>
+    <frame tileid="111" duration="350"/>
+    <frame tileid="113" duration="350"/>
+    <frame tileid="115" duration="350"/>
+    <frame tileid="117" duration="350"/>
+    <frame tileid="119" duration="350"/>
+   </animation>
+  </tile>
+  <tile id="120">
+   <animation>
+    <frame tileid="120" duration="150"/>
+    <frame tileid="121" duration="150"/>
+    <frame tileid="122" duration="150"/>
+    <frame tileid="123" duration="150"/>
+    <frame tileid="124" duration="150"/>
+    <frame tileid="125" duration="150"/>
+    <frame tileid="126" duration="150"/>
+   </animation>
+  </tile>
+  <tile id="130">
+   <objectgroup draworder="index"/>
+  </tile>
+  <tile id="144">
+   <animation>
+    <frame tileid="144" duration="150"/>
+    <frame tileid="145" duration="150"/>
+    <frame tileid="146" duration="150"/>
+    <frame tileid="147" duration="150"/>
+    <frame tileid="148" duration="150"/>
+   </animation>
+  </tile>
+  <tile id="149">
+   <animation>
+    <frame tileid="149" duration="100"/>
+    <frame tileid="150" duration="100"/>
+    <frame tileid="151" duration="100"/>
+   </animation>
+  </tile>
+  <tile id="152">
+   <animation>
+    <frame tileid="152" duration="100"/>
+    <frame tileid="153" duration="100"/>
+    <frame tileid="154" duration="100"/>
+   </animation>
+  </tile>
+  <tile id="157">
+   <animation>
+    <frame tileid="157" duration="100"/>
+    <frame tileid="158" duration="100"/>
+   </animation>
+  </tile>
+  <tile id="161">
+   <animation>
+    <frame tileid="161" duration="100"/>
+    <frame tileid="162" duration="100"/>
+   </animation>
+  </tile>
+  <tile id="170">
+   <animation>
+    <frame tileid="168" duration="500"/>
+    <frame tileid="171" duration="500"/>
+   </animation>
+  </tile>
+  <tile id="172">
+   <animation>
+    <frame tileid="172" duration="150"/>
+    <frame tileid="173" duration="150"/>
+    <frame tileid="174" duration="150"/>
+    <frame tileid="175" duration="150"/>
+   </animation>
+  </tile>
+  <tile id="176">
+   <objectgroup draworder="index"/>
+   <animation>
+    <frame tileid="176" duration="100"/>
+    <frame tileid="177" duration="100"/>
+    <frame tileid="178" duration="100"/>
+    <frame tileid="179" duration="100"/>
+    <frame tileid="180" duration="100"/>
+    <frame tileid="181" duration="100"/>
+   </animation>
+  </tile>
+  <tile id="192">
+   <animation>
+    <frame tileid="192" duration="200"/>
+    <frame tileid="195" duration="200"/>
+    <frame tileid="198" duration="200"/>
+    <frame tileid="201" duration="200"/>
+    <frame tileid="204" duration="200"/>
+   </animation>
+  </tile>
+  <tile id="193">
+   <animation>
+    <frame tileid="193" duration="200"/>
+    <frame tileid="196" duration="200"/>
+    <frame tileid="199" duration="200"/>
+    <frame tileid="202" duration="200"/>
+    <frame tileid="205" duration="200"/>
+   </animation>
+  </tile>
+  <tile id="195">
+   <animation>
+    <frame tileid="194" duration="200"/>
+    <frame tileid="197" duration="200"/>
+    <frame tileid="200" duration="200"/>
+    <frame tileid="203" duration="200"/>
+    <frame tileid="206" duration="200"/>
+   </animation>
+  </tile>
+  <tile id="216">
+   <animation>
+    <frame tileid="216" duration="200"/>
+    <frame tileid="219" duration="200"/>
+    <frame tileid="222" duration="200"/>
+    <frame tileid="225" duration="200"/>
+    <frame tileid="228" duration="200"/>
+   </animation>
+  </tile>
+  <tile id="217">
+   <animation>
+    <frame tileid="217" duration="200"/>
+    <frame tileid="220" duration="200"/>
+    <frame tileid="223" duration="200"/>
+    <frame tileid="226" duration="200"/>
+    <frame tileid="229" duration="200"/>
+   </animation>
+  </tile>
+  <tile id="218">
+   <animation>
+    <frame tileid="218" duration="200"/>
+    <frame tileid="221" duration="200"/>
+    <frame tileid="224" duration="200"/>
+    <frame tileid="227" duration="200"/>
+    <frame tileid="230" duration="200"/>
+   </animation>
+  </tile>
  </tileset>
  <layer name="Floor" width="20" height="20" opacity="0.5" offsetx="0.5" offsety="0.5">
   <data encoding="csv">
@@ -82,19 +254,19 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,83,84,0,0,0,0,0,
+107,108,0,107,108,0,0,177,0,0,0,0,0,83,84,145,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,107,108,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,131,132,0,0,0,0,0,
+0,0,0,0,0,0,0,153,162,0,0,0,150,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,158,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+11,12,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+35,36,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+59,60,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,107,108,109,110,111,112,113,114,115,116,117,118,119,120,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
@@ -106,6 +278,12 @@
    </properties>
   </object>
   <object id="11" name="Player_Start" type="STARTING_POINT" x="0.333333" y="144.333" width="32" height="32"/>
+  <object id="24" type="Collision" x="0" y="229" width="268.75" height="11.5"/>
+  <object id="25" type="Collision" x="262.5" y="74.25" width="5.75" height="166.75"/>
+  <object id="27" type="Collision" x="260.25" y="164.125" width="4.125" height="22.5"/>
+  <object id="28" type="Collision" x="215.75" y="110.5" width="16" height="12.5"/>
+  <object id="32" type="Collision" x="100" y="176" width="7.75" height="11.75"/>
+  <object id="39" type="Collision" x="0.25" y="-1.5" width="79" height="65.75"/>
  </objectgroup>
  <layer name="crates" width="20" height="20" offsetx="5" offsety="4.5">
   <data encoding="csv">
@@ -140,7 +318,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,121,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,183,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -148,8 +326,8 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,193,194,195,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,217,218,219,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0

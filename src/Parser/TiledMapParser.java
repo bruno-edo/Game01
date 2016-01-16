@@ -1,13 +1,16 @@
 package Parser;
 
+import Maps.TileMaps.Objects.Collision;
 import Maps.TileMaps.TileMap;
 import Maps.TileMaps.TileMapLayer;
+import Maps.TileMaps.Objects.TileMapObject;
 import Maps.TileMaps.Tileset;
 import org.w3c.dom.*;
 import javax.xml.parsers.*;
 import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.xml.sax.SAXException;
@@ -38,9 +41,7 @@ public class TiledMapParser
     
     /*
         This method builds the tile maps based on an XML file that is generated
-    using the Tiled map editor.
-        First it separates the tile layers, after that it grabs the object layers and then
-    proceeds to generate the TileMap object, so it can be returned to the controller for use.
+    using the Tiled map editor.    
     */
       
     //Loads the specified xml file to memory.
@@ -56,7 +57,6 @@ public class TiledMapParser
             doc.getDocumentElement().normalize();
             
             r = true;
-            //TODO: grab the object layers
         }
         
         
@@ -71,6 +71,8 @@ public class TiledMapParser
         
         return r;
     }
+    
+    //Grabs the map layers from the loaded document
     
     public TileMapLayer[] getMapLayers(int height, int width)
     {
@@ -147,7 +149,7 @@ public class TiledMapParser
     }
 
     
-    //Grabs the tileset relevant information and orders it by name.
+    //Grabs the tileset relevant information
     public ArrayList<Tileset> getTilesets() 
     {
         String tilesetName = "";
@@ -163,9 +165,7 @@ public class TiledMapParser
             
             //Grabs the name of the image to serve as tileset name.
             tilesetName = imageN.getAttributes().getNamedItem("source").getTextContent();
-            
-            System.out.println("tileset name: "+tilesetName);
-            
+                     
             int tileHeight = Integer.parseInt(n.getAttributes().getNamedItem("tileheight").getTextContent());
             int tileWidth = Integer.parseInt(n.getAttributes().getNamedItem("tilewidth").getTextContent());
             int gid = Integer.parseInt(n.getAttributes().getNamedItem("firstgid").getTextContent());
@@ -177,6 +177,102 @@ public class TiledMapParser
         }
                 
         return tilesetsList;
+    }
+    
+    public ArrayList<TileMapObject> getObjectLayer()
+    {
+        //TODO: finish it
+        ArrayList<TileMapObject> objects = new ArrayList<TileMapObject>();
+        NodeList nList = doc.getElementsByTagName("object");
+        HashMap<String, String> propertiesHash;
+        
+        for(int i = 0; i < nList.getLength(); i++)
+        {
+            TileMapObject obj;
+            //String name = nList.item(i).getAttributes().getNamedItem("name").getTextContent();
+            
+            /*
+                    List of types and their effects:
+                1 - Spawn, spawns certain entities,
+                2 - StartingPoint, places the player character after a transition,
+                3 - Damage, does damage to the player,
+                4 - Trigger, triggers events,
+                5 - Teleport, moves the player to another map,
+                6 - Collision, hinders or not the player (collision etc)
+            */
+            String type = nList.item(i).getAttributes().getNamedItem("type").getTextContent();
+            
+            double x = Double.parseDouble(nList.item(i).getAttributes().getNamedItem("x").getTextContent());
+            double y = Double.parseDouble(nList.item(i).getAttributes().getNamedItem("y").getTextContent());
+            double width = Double.parseDouble(nList.item(i).getAttributes().getNamedItem("width").getTextContent());
+            double height = Double.parseDouble(nList.item(i).getAttributes().getNamedItem("height").getTextContent());
+            
+            
+            propertiesHash = new HashMap<String, String>();
+            NodeList childs = nList.item(i).getChildNodes();
+            
+            if(childs.getLength() > 0)
+            {
+                /*
+                    List of properties and their effects:
+                    1 - FirstGid, tells the gid number from the left top corner 
+                of the image, so the entity can have its sprite rendered correctly - int;
+                    2 Passable, hinders or not the player (collision etc) -  int (0 - impassable, 1 - passable and 2 - slowed);
+                    3 - GoTo, tells which map to transport the player to - String (map path?);
+                    4 - SpawnID, tells what to spawn - int (ID???)
+                    5 - TriggerType, tells what kind of trigger it is (Cutscene, event, animation etc) - int (???)
+                    6 - Path, path to whatever resource is needed - String
+                
+                Note: So there's always at least 3 childs when the node has descendants,
+                that's because when there's ONE child another two nodes, containing line break
+                characters, will be generated. Leaving us with the following structure:
+                
+                Node: "\n"
+                Node: First real child
+                ...
+                Node: "\n"
+                 -end-
+                */
+                
+                Node properties = childs.item(1);
+                
+                /*
+                    Here I have the node properties, its structure is as shown bellow:
+                
+                    <properties>
+                        <property name="GoesTo" value="NextRoom"/>
+                    </properties>
+                
+                    So it's necessary to grab properties childs and go through them one by one.
+                */
+                
+                NodeList propertyNodes = properties.getChildNodes();
+                
+                for(int k = 1; k < propertyNodes.getLength()-1; k++) //Ignores the line break characters.
+                {
+                    //TODO: sort these properties
+                    String propertyName = propertyNodes.item(k).getAttributes().getNamedItem("name").getTextContent();
+                    String propertyValue = propertyNodes.item(k).getAttributes().getNamedItem("value").getTextContent();
+                    propertiesHash.put(propertyName, propertyValue);
+                }
+            }
+            if(type.toLowerCase().equals("collision"))
+            {
+                obj = new Collision(x, y, width, height, type);
+            }
+            else
+            {
+                obj = null;
+            }
+            
+            if(obj != null)
+            {
+                objects.add(obj);
+            }           
+        }
+        //System.out.println(nList.item(0).getAttributes().getNamedItem("name"));
+        return objects;
+        
     }
     
     //Examine the attributes from the root element to know the tileMap dimensions

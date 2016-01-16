@@ -62,6 +62,12 @@ public class Tileset
             }
         }
     }
+    
+    public Tile getTileByGid(int gid) 
+    {
+        int position = gid - firstGid;
+        return tiles.get(position);
+    }
 
     public String getPath() {
         return path;
